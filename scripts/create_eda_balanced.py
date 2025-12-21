@@ -1,21 +1,28 @@
 import pandas as pd
 from pathlib import Path
 
-RAW_DATA_PATH = Path("data/raw/paysim.csv")
-OUTPUT_PATH = Path("data/eda/paysim_balanced_eda.csv")
+# config
+RAW_DATA_PATH = Path("data/raw/creditcard.csv")
+OUTPUT_PATH = Path("data/eda/creditcard_balanced_eda.csv")
+LABEL_COL = 'Class'
 
-print("Loading raw data...")
-paysim = pd.read_csv(RAW_DATA_PATH)
+MAX_SAMPLES = 1000
+RANDOM_STATE = 42
 
-fraud_df = paysim[paysim['isFraud'] == 1]
-non_fraud_df = paysim[paysim['isFraud'] == 0]
+# load data
+print(f"Loading raw data from {RAW_DATA_PATH}...")
+df = pd.read_csv(RAW_DATA_PATH)
+
+# split classes
+fraud_df = df[df[LABEL_COL] == 1]
+non_fraud_df = df[df[LABEL_COL] == 0]
+
+N_SAMPLES = min(MAX_SAMPLES, len(fraud_df))
 
 print(f"Total fraud transactions: {len(fraud_df)}")
 print(f"Total non-fraud transactions: {len(non_fraud_df)}")
 
-N_SAMPLES = 1000
-RANDOM_STATE = 42
-
+# sample
 fraud_sample = fraud_df.sample(
     n=N_SAMPLES,
     random_state=RANDOM_STATE
@@ -31,8 +38,9 @@ balanced_eda_df = pd.concat(
     axis=0
 ).sample(frac=1, random_state=RANDOM_STATE).reset_index(drop=True)
 
+# save
 OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
 balanced_eda_df.to_csv(OUTPUT_PATH, index=False)
 
 print(f"balanced EDA dataset saved to: {OUTPUT_PATH}")
-print(balanced_eda_df["isFraud"].value_counts())
+print(balanced_eda_df[LABEL_COL].value_counts())
