@@ -13,6 +13,12 @@ class BehavioralFeatureEngineer(BaseEstimator, TransformerMixin):
     def transform(self, X):
         X = X.copy()
 
+        X = self._create_transaction_count_features(X)
+        X = self._create_amount_features(X)
+        X = self._create_destination_features(X)
+
+        X = X.drop(columns=["nameOrig", "nameDest"])
+
         return X
 
     def _create_transaction_count_features(self, X):
