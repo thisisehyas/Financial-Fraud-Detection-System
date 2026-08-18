@@ -31,5 +31,6 @@ scaler = ColumnTransformer(
             numerical_features
         )
     ],
-    remainder="passthrough"
+    remainder="passthrough",
+    verbose_feature_names_out=False
 )
