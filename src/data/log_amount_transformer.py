@@ -9,6 +9,7 @@ class LogAmountTransformer(BaseEstimator, TransformerMixin):
         pass
 
     def fit(self, X, y=None):
+        self.is_fitted_ = True
         return self
 
     def transform(self, X):

@@ -1,8 +1,9 @@
 from sklearn.pipeline import Pipeline
 
-from log_amount_transformer import LogAmountTransformer
+from src.data.log_amount_transformer import LogAmountTransformer
 
 
-creditcard_pipeline = Pipeline([
-    ("log_amount", LogAmountTransformer()),
-])
+def create_creditcard_pipeline():
+    return Pipeline([
+        ("log_amount", LogAmountTransformer()),
+    ])

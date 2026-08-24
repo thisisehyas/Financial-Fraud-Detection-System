@@ -1,29 +1,36 @@
 from sklearn.pipeline import Pipeline
 from sklearn import set_config
 
-from cleaners import DataCleaner
-from transaction_history_preprocessor import TransactionHistoryPreprocessor
-from behavioral_feature_engineer import BehavioralFeatureEngineer
-from transaction_type_encoder import TransactionTypeEncoder
-from feature_scaler import scaler
+from src.data.cleaners import DataCleaner
+from src.data.transaction_history_preprocessor import TransactionHistoryPreprocessor
+from src.data.behavioral_feature_engineer import BehavioralFeatureEngineer
+from src.data.transaction_type_encoder import TransactionTypeEncoder
+from src.data.feature_scaler import scaler
+
 
 set_config(transform_output="pandas")
 
-paysim_pipeline = Pipeline([
-    ("cleaner", DataCleaner(required_columns=[
-        "step",
-        "type",
-        "amount",
-        "nameOrig",
-        "nameDest",
-    ])),
 
-    ("history", TransactionHistoryPreprocessor()),
+def create_paysim_pipeline():
+    return Pipeline([
+        (
+            "cleaner",
+            DataCleaner(
+                required_columns=[
+                    "step",
+                    "type",
+                    "amount",
+                    "nameOrig",
+                    "nameDest",
+                ]
+            ),
+        ),
 
-    ("behavioral_features", BehavioralFeatureEngineer()),
+        ("history", TransactionHistoryPreprocessor()),
 
-    ("type_encoder", TransactionTypeEncoder()),
+        ("behavioral_features", BehavioralFeatureEngineer()),
 
-    ("scaler", scaler),
+        ("type_encoder", TransactionTypeEncoder()),
 
-])
+        ("scaler", scaler),
+    ])
