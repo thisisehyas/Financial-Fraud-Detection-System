@@ -1,6 +1,7 @@
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler
 
+
 numerical_features = [
     "step",
     "amount",
@@ -23,14 +24,16 @@ numerical_features = [
     "unique_dest_last_7d",
 ]
 
-scaler = ColumnTransformer(
-    transformers=[
-        (
-            "numerical",
-            StandardScaler(),
-            numerical_features
-        )
-    ],
-    remainder="passthrough",
-    verbose_feature_names_out=False
-)
+
+def create_scaler():
+    return ColumnTransformer(
+        transformers=[
+            (
+                "numerical",
+                StandardScaler(),
+                numerical_features,
+            )
+        ],
+        remainder="passthrough",
+        verbose_feature_names_out=False,
+    )
