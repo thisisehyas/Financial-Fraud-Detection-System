@@ -5,7 +5,7 @@ from src.data.cleaners import DataCleaner
 from src.data.transaction_history_preprocessor import TransactionHistoryPreprocessor
 from src.data.behavioral_feature_engineer import BehavioralFeatureEngineer
 from src.data.transaction_type_encoder import TransactionTypeEncoder
-from src.data.feature_scaler import scaler
+from src.data.feature_scaler import create_scaler
 
 
 set_config(transform_output="pandas")
@@ -32,5 +32,5 @@ def create_paysim_pipeline():
 
         ("type_encoder", TransactionTypeEncoder()),
 
-        ("scaler", scaler),
+        ("scaler", create_scaler()),
     ])
